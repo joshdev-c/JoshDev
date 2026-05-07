@@ -7,7 +7,7 @@ import { Github } from "lucide-react";
 const project = {
   title: "KBArchitecture",
   description:
-    "Built with Next.js and Tailwind CSS. A full-featured online store with secure payments and real-time inventory management.",
+    "Built with Next.js and Tailwind CSS. A personal website portfolio with a focus on architectural design.",
   color: "bg-primary/5",
   tags: ["Next.js", "Tailwind"],
   image: "/kb-architecture.png",
@@ -90,7 +90,7 @@ export function Projects() {
                     target="_blank"
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.9 }}
-                    href="#"
+                    href="https://github.com/joshdev-c/K-Web"
                     className="w-14 h-14 flex items-center justify-center rounded-full bg-accent text-white shadow-primary hover:shadow-[0_2px_0_0_#1e3d33] border-2 border-secondary"
                   >
                     <Github size={20} />
