@@ -10,15 +10,35 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setIsSubmitting(true);
     
-    // Mock submission (soon to be replaced with actual form submission)
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    setTimeout(() => setIsSubmitted(false), 5000);
+    try {
+      const formData = new FormData(form);
+      const response = await fetch("https://formspree.io/f/mqenldwn", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      
+      const result = await response.json();
+      console.log("Formspree response:", result);
+      
+      if (response.ok) {
+        setIsSubmitted(true);
+        form.reset();
+      } else {
+        throw new Error(result.error || "Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert(`Error: ${(error as Error).message || "Unknown error. Please try again or email directly."}`);
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setIsSubmitted(false), 5000);
+    }
   };
 
   const socialLinks = [
@@ -86,6 +106,7 @@ export function Contact() {
                   <label className="text-sm font-semibold ml-1">Name</label>
                   <input
                     type="text"
+                    name="name"
                     required
                     placeholder="Your name"
                     className="w-full px-5 py-3 rounded-2xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
@@ -95,6 +116,7 @@ export function Contact() {
                   <label className="text-sm font-semibold ml-1">Email</label>
                   <input
                     type="email"
+                    name="email"
                     required
                     placeholder="Your email"
                     className="w-full px-5 py-3 rounded-2xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
@@ -105,6 +127,7 @@ export function Contact() {
                 <label className="text-sm font-semibold ml-1">Message</label>
                 <textarea
                   required
+                  name="message"
                   rows={4}
                   placeholder="Your message"
                   className="w-full px-5 py-3 rounded-2xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
